@@ -11,7 +11,12 @@
     "start": "node yogiserver.cjs",
     "build": "webpack --mode production",
     "dev": "webpack serve --mode development",
-    "dev:server": "node yogiserver.cjs"
+    "dev:server": "node yogiserver.cjs",
+    "heroku-postbuild": "npm run build"
+  },
+  "engines": {
+    "node": "20.x",
+    "npm": "9.x"
   },
   "repository": {
     "type": "git",

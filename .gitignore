@@ -46,3 +46,16 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Environment variables
+.env
+
+# React build output
+public/dist/
+public/index.html
+
+# Webpack build artifacts
+dist/
+
+# Deployment
+.deployment
