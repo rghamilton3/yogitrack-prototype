@@ -46,20 +46,87 @@ exports.add = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
+    // Check if instructor name already exists (as per use case requirements)
+    const existingInstructor = await Instructor.findOne({
+      firstname: firstname.trim(),
+      lastname: lastname.trim()
+    });
+
+    if (existingInstructor) {
+      return res.status(409).json({
+        message: "Instructor with this name already exists",
+        confirmRequired: true,
+        existingInstructor: existingInstructor
+      });
+    }
+
     // Create a new instructor document
     const newInstructor = new Instructor({
       instructorId,
-      firstname,
-      lastname,
-      address,
-      phone,
-      email,
+      firstname: firstname.trim(),
+      lastname: lastname.trim(),
+      address: address?.trim(),
+      phone: phone.trim(),
+      email: email.trim(),
       preferredContact
     });
 
     // Save to database
     await newInstructor.save();
-    res.status(201).json({ message: "Instructor added successfully", instructor: newInstructor });
+
+    // Send confirmation message (simulated as logged message)
+    console.log(`📧 Confirmation sent to ${email}: Welcome to Yoga'Hom! Your instructor id is ${instructorId}.`);
+
+    res.status(201).json({
+      message: "Instructor added successfully",
+      instructor: newInstructor,
+      confirmationSent: true
+    });
+  } catch (err) {
+    console.error("Error adding instructor:", err.message);
+    res.status(500).json({ message: "Failed to add instructor", error: err.message });
+  }
+};
+
+exports.addConfirmed = async (req, res) => {
+  try {
+    const {
+      instructorId,
+      firstname,
+      lastname,
+      email,
+      phone,
+      address,
+      preferredContact
+    } = req.body;
+
+    // Basic validation
+    if (!firstname || !lastname || !email || !phone) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    // Create a new instructor document (confirmed by user despite duplicate name)
+    const newInstructor = new Instructor({
+      instructorId,
+      firstname: firstname.trim(),
+      lastname: lastname.trim(),
+      address: address?.trim(),
+      phone: phone.trim(),
+      email: email.trim(),
+      preferredContact
+    });
+
+    // Save to database
+    await newInstructor.save();
+
+    // Send confirmation message (simulated as logged message)
+    console.log(`📧 Confirmation sent to ${email}: Welcome to Yoga'Hom! Your instructor id is ${instructorId}.`);
+
+    res.status(201).json({
+      message: "Instructor added successfully",
+      instructor: newInstructor,
+      confirmationSent: true
+    });
   } catch (err) {
     console.error("Error adding instructor:", err.message);
     res.status(500).json({ message: "Failed to add instructor", error: err.message });

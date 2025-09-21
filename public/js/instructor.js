@@ -48,10 +48,40 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
       });
 
       const result = await res.json();
+
+      if (res.status === 409 && result.confirmRequired) {
+        // Handle duplicate name confirmation
+        const confirmed = confirm(`⚠️ An instructor named "${instructorData.firstname} ${instructorData.lastname}" already exists. Do you want to add another instructor with the same name?`);
+
+        if (confirmed) {
+          // Make confirmed add request
+          const confirmRes = await fetch("/api/instructor/addConfirmed", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(instructorData),
+          });
+
+          const confirmResult = await confirmRes.json();
+          if (!confirmRes.ok) {
+            throw new Error(confirmResult.message || "Failed to add instructor");
+          }
+
+          alert(`✅ Instructor ${instructorData.instructorId} added successfully!`);
+          if (confirmResult.confirmationSent) {
+            alert(`📧 Confirmation message sent to ${instructorData.email}`);
+          }
+          form.reset();
+        }
+        return;
+      }
+
       if (!res.ok)
         throw new Error(result.message || "Failed to add instructor");
 
       alert(`✅ Instructor ${instructorData.instructorId} added successfully!`);
+      if (result.confirmationSent) {
+        alert(`📧 Confirmation message sent to ${instructorData.email}`);
+      }
       form.reset();
     } catch (err) {
       alert("❌ Error: " + err.message);
