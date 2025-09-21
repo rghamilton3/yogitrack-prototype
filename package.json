@@ -8,7 +8,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node yogiserver.cjs"
+    "start": "node yogiserver.cjs",
+    "build": "webpack --mode production",
+    "dev": "webpack serve --mode development",
+    "dev:server": "node yogiserver.cjs"
   },
   "repository": {
     "type": "git",
@@ -26,6 +29,21 @@
     "mongodb": "^6.20.0",
     "mongoose": "^8.18.1",
     "mongoose-int32": "^0.6.0",
-    "mongosh": "^2.5.8"
+    "mongosh": "^2.5.8",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-react": "^7.27.1",
+    "babel-loader": "^10.0.0",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.4",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
   }
 }
