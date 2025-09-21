@@ -125,8 +125,7 @@ npm start
 
 The project includes GitHub Actions for automated deployment:
 
-- **On Pull Request**: Runs tests and builds
-- **On Push to Main**: Deploys to Heroku after successful tests
+- **On Push to Main**: Builds React app and deploys to Heroku
 
 Required GitHub Secrets:
 
@@ -154,10 +153,12 @@ Required GitHub Secrets:
 - `POST /api/customer/addConfirmed` - Add customer (confirmed duplicate)
 - `DELETE /api/customer/deleteCustomer?customerId=C001` - Delete customer
 
-## 🧪 Testing
+## 🔧 Development
 
 ```bash
-npm test
+# Start development environment
+npm run dev:server  # Backend
+npm run dev         # Frontend with hot reload
 ```
 
 ## 📁 Project Structure
