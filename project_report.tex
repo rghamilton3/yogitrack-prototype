@@ -1,0 +1,202 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usepackage{url}
+\usepackage{hyperref}
+
+\title{YogiTrack Studio Management System\\Part 1 Project Report}
+\author{Robert Hamilton}
+\date{\today}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+
+{\Huge\bfseries YogiTrack Studio Management System}\\[0.5cm]
+{\Large Part 1 Project Report}\\[2cm]
+
+{\large Robert Hamilton}\\[1cm]
+
+{\large \today}\\[3cm]
+
+\begin{tabular}{ll}
+\textbf{GitHub Repository:} & \url{https://github.com/rghamilton3/yogitrack-prototype} \\[0.5cm]
+\textbf{Live Application:} & \url{https://yogitrack-prototype-a1daf9b97aac.herokuapp.com/}
+\end{tabular}
+
+\vfill
+\end{titlepage}
+
+\section{Project Overview}
+
+YogiTrack is a MERN stack application designed for yoga studio management. The system enables administrators to manage instructors, customers, and classes with automated conflict detection and notification systems.
+
+\section{Implemented Use Cases}
+
+\subsection{Use Case 1: Add Instructor}
+Allows adding new yoga instructors with duplicate name validation and automatic confirmation messaging to management.
+
+\subsection{Use Case 2: Add Class}
+Enables class creation with intelligent schedule conflict detection, alternative time slot suggestions, and instructor notifications.
+
+\subsection{Use Case 4: Add Customer}
+Facilitates customer registration with senior status tracking and comprehensive profile management.
+
+\section{Architecture \& Design Decisions}
+
+\subsection{Technology Stack}
+\begin{itemize}
+    \item \textbf{Frontend:} React 19 with functional components and hooks
+    \item \textbf{Backend:} Express.js 5 with RESTful API design
+    \item \textbf{Database:} MongoDB with Mongoose ODM
+    \item \textbf{Build Tool:} Webpack with Babel transpilation
+    \item \textbf{Deployment:} Heroku with GitHub Actions CI/CD
+\end{itemize}
+
+\subsection{Key Design Patterns}
+\begin{itemize}
+    \item Reusable EntityForm component eliminating code duplication
+    \item Centralized API service layer with error handling
+    \item Embedded document schemas for complex schedule management
+    \item Conflict detection algorithms with alternative suggestions
+\end{itemize}
+
+\section{System Architecture}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\tikzumlset{fill class=white}
+
+% Frontend Layer
+\umlclass[x=0,y=6]{React Frontend}{
++ EntityForm\\
++ Layout\\
++ Router
+}{
++ handleCRUD()\\
++ validateInput()\\
++ displayNotifications()
+}
+
+% API Layer
+\umlclass[x=6,y=6]{Express API}{
++ instructorRoutes\\
++ customerRoutes\\
++ classRoutes
+}{
++ validateData()\\
++ checkConflicts()\\
++ sendNotifications()
+}
+
+% Database Layer
+\umlclass[x=0,y=2]{MongoDB}{
++ instructors\\
++ customers\\
++ classes
+}{
++ create()\\
++ read()\\
++ update()\\
++ delete()
+}
+
+% External Services
+\umlclass[x=6,y=2]{External Services}{
++ Email Service\\
++ SMS Service
+}{
++ sendConfirmation()\\
++ notifyInstructor()
+}
+
+% Relationships
+\umluniassoc{React Frontend}{Express API}
+\umluniassoc{Express API}{MongoDB}
+\umluniassoc{Express API}{External Services}
+
+\end{tikzpicture}
+\caption{High-Level System Architecture}
+\end{figure}
+
+\section{Database Schema}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\tikzumlset{fill class=white}
+
+% Instructor Entity
+\umlclass[x=0,y=6]{Instructor}{
+- instructorId: String\\
+- firstname: String\\
+- lastname: String\\
+- email: String\\
+- phone: String\\
+- bio: String\\
+- active: Boolean
+}{}
+
+% Customer Entity
+\umlclass[x=6,y=6]{Customer}{
+- customerId: String\\
+- firstname: String\\
+- lastname: String\\
+- email: String\\
+- phone: String\\
+- address: String\\
+- senior: Boolean\\
+- active: Boolean
+}{}
+
+% Class Entity
+\umlclass[x=3,y=2]{Class}{
+- classId: String\\
+- className: String\\
+- instructorId: String\\
+- classType: String\\
+- description: String\\
+- payRate: Number\\
+- daytime: [Daytime]\\
+- active: Boolean
+}{}
+
+% Daytime Embedded Document
+\umlclass[x=3,y=-2]{Daytime}{
+- day: String\\
+- time: String\\
+- duration: Number
+}{}
+
+% Relationships
+\umlassoc{Class}{Instructor}
+\umlcompo{Class}{Daytime}
+
+\end{tikzpicture}
+\caption{Database Entity Relationship Diagram}
+\end{figure}
+
+\section{Key Implementation Features}
+
+\subsection{Schedule Conflict Detection}
+Implemented intelligent algorithm that checks for time overlaps and provides alternative scheduling suggestions when conflicts are detected.
+
+\subsection{Automated Notifications}
+Integrated confirmation messaging system that notifies managers and instructors upon successful operations.
+
+\subsection{Responsive UI Components}
+Created reusable React components with consistent styling and error handling across all entity management interfaces.
+
+\subsection{CI/CD Pipeline}
+Established automated deployment workflow using GitHub Actions with Heroku integration for continuous delivery.
+
+\section{Conclusion}
+
+The YogiTrack system successfully implements core studio management functionality with robust conflict detection, automated notifications, and a scalable MERN architecture. The reusable component design and comprehensive API layer provide a solid foundation for future feature expansion.
+
+\end{document}
