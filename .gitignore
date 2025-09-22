@@ -59,3 +59,31 @@ dist/
 
 # Deployment
 .deployment
+
+# LaTeX auxiliary files
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.nav
+*.snm
+*.vrb
+*.idx
+*.ilg
+*.ind
+*.lof
+*.lot
+*.nlo
+*.nls
+*.xdy
+*.figlist
+*.makefile
+*.fls
+*.fdb_latexmk
