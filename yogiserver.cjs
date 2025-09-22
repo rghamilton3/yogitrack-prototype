@@ -32,8 +32,8 @@ app.get('/customers', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 
-// Catch-all for unmatched routes
-app.get('*', (req, res) => {
+// Catch-all for all other routes
+app.use((req, res) => {
   // For API routes that don't exist, return 404 JSON
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ error: 'API endpoint not found', path: req.path });

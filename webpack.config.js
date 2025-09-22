@@ -3,11 +3,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
-  mode: 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   output: {
     path: path.resolve(__dirname, 'public/dist'),
     filename: 'bundle.js',
-    publicPath: '/dist/'
+    publicPath: process.env.NODE_ENV === 'production' ? '/dist/' : '/dist/'
   },
   module: {
     rules: [
