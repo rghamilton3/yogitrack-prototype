@@ -1,1 +1,1 @@
-web: npm run build && node yogiserver.cjs
+web: node yogiserver.cjs
