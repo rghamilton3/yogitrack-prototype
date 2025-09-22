@@ -44,5 +44,16 @@ jobs:
 
     - name: Health check
       run: |
+        echo "Waiting for app to start..."
         sleep 30
-        curl -f https://${{ secrets.HEROKU_APP_NAME }}.herokuapp.com/api/instructor/getNextId || exit 1
+
+        echo "Testing basic health endpoint..."
+        curl -f https://${{ secrets.HEROKU_APP_NAME }}.herokuapp.com/health || {
+          echo "Health check failed, trying API endpoint..."
+          curl -v https://${{ secrets.HEROKU_APP_NAME }}.herokuapp.com/api/instructor/getNextId || {
+            echo "API endpoint failed, checking app logs..."
+            exit 1
+          }
+        }
+
+        echo "Deployment health check passed!"

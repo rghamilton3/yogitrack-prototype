@@ -6,9 +6,14 @@ const app = express();
 app.use(express.static("public"));
 app.use(express.json());
 
-// API routes
+// API routes (must come before catch-all routes)
 app.use("/api/instructor", require("./routes/instructorRoutes.cjs"));
 app.use("/api/customer", require("./routes/customerRoutes.cjs"));
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+});
 
 // Serve React app for specific routes
 app.get('/', (req, res) => {
@@ -24,6 +29,16 @@ app.get('/instructors', (req, res) => {
 });
 
 app.get('/customers', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
+
+// Catch-all for unmatched routes
+app.get('*', (req, res) => {
+  // For API routes that don't exist, return 404 JSON
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'API endpoint not found', path: req.path });
+  }
+  // For other routes, serve React app
   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 
