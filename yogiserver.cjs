@@ -9,6 +9,7 @@ app.use(express.json());
 // API routes (must come before catch-all routes)
 app.use("/api/instructor", require("./routes/instructorRoutes.cjs"));
 app.use("/api/customer", require("./routes/customerRoutes.cjs"));
+app.use("/api/class", require("./routes/classRoutes.cjs"));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -29,6 +30,10 @@ app.get('/instructors', (req, res) => {
 });
 
 app.get('/customers', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
+
+app.get('/classes', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 

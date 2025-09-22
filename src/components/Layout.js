@@ -11,7 +11,7 @@ function Layout({ children }) {
         <nav className="nav">
           <Link to="/instructors">Instructors</Link>
           <Link to="#">Packages</Link>
-          <Link to="#">Class Schedule</Link>
+          <Link to="/classes">Classes</Link>
           <Link to="/customers">Customers</Link>
           <Link to="#">Check-ins</Link>
           <Link to="/">Log Out</Link>

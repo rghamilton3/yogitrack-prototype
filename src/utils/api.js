@@ -55,5 +55,6 @@ class ApiService {
 // Create service instances
 export const instructorApi = new ApiService('/api/instructor');
 export const customerApi = new ApiService('/api/customer');
+export const classApi = new ApiService('/api/class');
 
 export default ApiService;
